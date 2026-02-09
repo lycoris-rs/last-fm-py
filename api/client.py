@@ -17,6 +17,8 @@ from .models import (
     AlbumSearchResponse,
     AlbumDetail,
     AlbumDetailResponse,
+    AlbumTags,
+    AlbumTagResponse,
 )
 
 __all__ = ("LastFMApi",)
@@ -127,39 +129,6 @@ class LastFMApi:
         if self._session is not None and not self._using_custom_session:
             await self._session.close()
 
-    async def album_search(
-        self,
-        album: str,
-        limit: int = 30,
-        page: int = 1,
-        use_cache: bool = True,
-    ) -> list[Album]:
-        """
-        Search for an album.
-
-        Returns:
-            list[Album]: A list of matching albums.
-
-        Params:
-            album: The name of the album. Required.
-            limit: The amount of albums to return. Defaults to 30. Optional.
-            page: The page to return the results from. Defaults to 1. Optional.
-            use_cache: Whether to allow the response to be served from cache.
-                       Defaults to True. Optional.
-        """
-        params = {
-            "method": "album.search",
-            "album": album,
-            "limit": limit,
-            "page": page,
-        }
-        data = await self._request(
-            params=params,
-            use_cache=use_cache,
-        )
-        parsed = AlbumSearchResponse.model_validate(data)
-        return parsed.results.albummatches.album
-
     async def album_get_info(
         self,
         artist: str,
@@ -203,6 +172,63 @@ class LastFMApi:
         data = await self._request(params=params, use_cache=use_cache)
         parsed = AlbumDetailResponse.model_validate(data)
         return parsed.album
+
+    async def album_get_tags(
+        self,
+        artist: str,
+        album: str,
+        user: str,
+        mbid: str | None = None,
+        autocorrect: bool = True,
+        use_cache: bool = True,
+    ) -> AlbumTags:
+        params = {
+            "method": "album.gettags",
+            "artist": artist,
+            "album": album,
+            "user": user,
+            "mbid": mbid,
+            "autocorrect": int(autocorrect),
+        }
+        data = await self._request(
+            params=params,
+            use_cache=use_cache,
+        )
+        parsed = AlbumTagResponse.model_validate(data)
+        return parsed.tags
+
+    async def album_search(
+        self,
+        album: str,
+        limit: int = 30,
+        page: int = 1,
+        use_cache: bool = True,
+    ) -> list[Album]:
+        """
+        Search for an album.
+
+        Returns:
+            list[Album]: A list of matching albums.
+
+        Params:
+            album: The name of the album. Required.
+            limit: The amount of albums to return. Defaults to 30. Optional.
+            page: The page to return the results from. Defaults to 1. Optional.
+            use_cache: Whether to allow the response to be served from cache.
+                       Defaults to True. Optional.
+        """
+        params = {
+            "method": "album.search",
+            "album": album,
+            "limit": limit,
+            "page": page,
+        }
+        data = await self._request(
+            params=params,
+            use_cache=use_cache,
+        )
+        parsed = AlbumSearchResponse.model_validate(data)
+        return parsed.results.albummatches.album
 
     async def artist_search(
         self,
