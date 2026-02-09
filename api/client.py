@@ -25,9 +25,10 @@ CACHE_PATH = anyio.Path("./.cache/lastfm")
 
 
 class LastFMApi:
-    """The main class to interact with the last.fm API
+    """
+    The main class to interact with the last.fm API
 
-    Args:
+    Params:
         api_key: Your personal Last.fm API Key. Required.
                  Visit https://www.last.fm/api/authentication for instructions.
         cache_ttl: The time-to-live for the cached data in seconds, defaults to 3600. Optional.
@@ -69,9 +70,10 @@ class LastFMApi:
     async def _request(
         self, *, params: dict[str, Any], use_cache: bool
     ) -> dict[str, Any]:
-        """Make an asynchronous request to the specified API endpoint.
+        """
+        Make an asynchronous request to the specified API endpoint.
 
-        Args:
+        Params:
             params: The parameters to supply the API with. Required.
             use_cache: Whether to allow the request to be served from cache.
                        Defaults to True. Optional.
@@ -107,7 +109,8 @@ class LastFMApi:
         return data
 
     async def start(self) -> None:
-        """Initialize the internal aiohttp session.
+        """
+        Initialize the internal aiohttp session.
 
         Must be called before making any API requests if not using `async with`.
         """
@@ -116,7 +119,8 @@ class LastFMApi:
         )
 
     async def close(self) -> None:
-        """Close the internal aiohttp session.
+        """
+        Close the internal aiohttp session.
 
         Should be called to release resources if not using `async with`.
         """
@@ -130,12 +134,13 @@ class LastFMApi:
         page: int = 1,
         use_cache: bool = True,
     ) -> list[Album]:
-        """Search for an album.
+        """
+        Search for an album.
 
         Returns:
-            A list of matching albums.
+            list[Album]: A list of matching albums.
 
-        Args:
+        Params:
             album: The name of the album. Required.
             limit: The amount of albums to return. Defaults to 30. Optional.
             page: The page to return the results from. Defaults to 1. Optional.
@@ -165,12 +170,13 @@ class LastFMApi:
         autocorrect: bool = True,
         use_cache: bool = True,
     ) -> AlbumDetail:
-        """Fetch details about a specific album.
+        """
+        Fetch details about a specific album.
 
         Returns:
             An AlbumDetail object.
 
-        Args:
+        Params:
             artist: The artist of the album. Required, unless mbid is supplied.
             album: The name of the album. Required, unless mbid is supplied.
             mbid: The musicbrainz id for the album. Optional.
@@ -205,12 +211,13 @@ class LastFMApi:
         page: int = 1,
         use_cache: bool = True,
     ) -> list[Artist]:
-        """Search for an artist.
+        """
+        Search for an artist.
 
         Returns:
-            A list of matching artists.
+            list[Artist]: A list of matching artists.
 
-        Args:
+        Params:
             artist: The name of the artist. Required.
             limit: The amount of artists to return. Defaults to 30. Optional.
             page: The page to return the results from. Defaults to 1. Optional.
@@ -239,9 +246,13 @@ class LastFMApi:
         autocorrect: bool = True,
         use_cache: bool = True,
     ) -> ArtistDetail:
-        """Fetch details about a specific artist.
+        """
+        Fetch details about a specific artist.
 
-        Args:
+        Returns:
+            An ArtistDetail object.
+
+        Params:
             artist: The name of the artist. Required, unless mbid is supplied.
             mbid: The musicbrainz id for the artist. Optional.
             lang: The language to return the biography in. Optional.
