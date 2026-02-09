@@ -10,7 +10,13 @@ wheels/
 .venv
 .env
 
+# Example code
+.example.py
+
 # Other
 .cache
 .mypy_cache
 .vscode
+
+# Example code
+example.py
