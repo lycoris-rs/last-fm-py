@@ -3,6 +3,15 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class AlbumImage(BaseModel):
+    """
+    Represents an image associated with an album.
+
+    Attributes:
+        url: The URL of the image.
+        size: The size category of the image. One of "small", "medium", "large",
+              "extralarge", or "mega". Optional.
+    """
+
     url: str = Field(alias="#text")
     size: Literal["small", "medium", "large", "extralarge", "mega"] | None
 
@@ -16,6 +25,18 @@ class AlbumImage(BaseModel):
 
 
 class Album(BaseModel):
+    """
+    Basic information about an album.
+
+    Attributes:
+        name: The name of the album.
+        artist: The album's artist.
+        url: The URL to the album's page.
+        image: A list of AlbumImage objects.
+        streamable: Whether the album is streamable. (Not sure if this is correct.)
+        mbid: The MusicBrainz ID for the album. Optional.
+    """
+
     name: str
     artist: str
     url: str
@@ -35,11 +56,26 @@ class Album(BaseModel):
 
 
 class AlbumTag(BaseModel):
-    url: str
+    """
+    Represents a tag associated with the album.
+
+    Attributes:
+        name: Name of the tag.
+        url: URL related to the tag.
+    """
+
     name: str
+    url: str
 
 
 class AlbumTags(BaseModel):
+    """
+    Container for album tags.
+
+    Attributes:
+        tag: List of AlbumTag objects.
+    """
+
     tag: list[AlbumTag]
 
 
